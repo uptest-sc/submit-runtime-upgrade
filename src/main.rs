@@ -1,4 +1,4 @@
-use libuptest::metadata::read_wasm_binary;
+use libuptest::metadata::read_wasm_binary_correct;
 use libuptest::ws_mod::get_runtime_version;
 use libuptest::jsonrpseeclient::JsonrpseeClient;
 
@@ -12,8 +12,7 @@ pub mod nodetemplate {}
 
 use nodetemplate::runtime_types::sp_weights::weight_v2::Weight;
 
-//type Call = nodetemplate::Call;//nodetemplate::runtime_types::node_template_runtime::Call; //nodetemplate::Call;
-//type Call = nodetemplate::runtime_types::node_template_runtime::Call;
+
 type SystemCall = nodetemplate::runtime_types::frame_system::pallet::Call;
 
 #[tokio::main]
@@ -21,13 +20,11 @@ async fn main() {
     // define wasm path
     let wasm_path = Path::new("/tmp/substrate-node-template/target/release/wbuild/node-template-runtime/node_template_runtime.compact.wasm");
     // read binary
-    let wasm_binary: Option<&[u8]> = Some(include_bytes!("/tmp/substrate-node-template/target/release/wbuild/node-template-runtime/node_template_runtime.compact.compressed.wasm"));
-    // this is wrong and left unfixed until it goes upstream
-    let _code: Vec<u8> = vec![read_wasm_binary(wasm_path).await.unwrap()];
+    let code: Vec<u8> = read_wasm_binary_correct(wasm_path).await;
     // create system set_code call
     let call = nodetemplate::runtime_types::node_template_runtime::RuntimeCall::System(
         SystemCall::set_code {
-            code: wasm_binary.expect("could not decode wasm binary").into(),
+            code: code.into(),
         },
     ); //Call::System(
     let weight = Weight {
