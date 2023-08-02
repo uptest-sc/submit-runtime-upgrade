@@ -53,8 +53,7 @@ async fn main() {
         .await
         .unwrap();
     println!("Sent tx: {:?}", events.block_hash());
-    println!("Runtime is now");
     let runtime_version = get_runtime_version(apij).await.expect("Could not detect runtimeversion");
-    println!("Runtime Version changed from {:?} to {:?}", runtime_version.spec_version, old_runtime_version);
+    println!("Runtime Version changed from {:?} to {:?}", old_runtime_version, runtime_version.spec_version);
 }
 
