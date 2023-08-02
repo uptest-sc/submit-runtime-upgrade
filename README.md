@@ -1,5 +1,9 @@
 # submit-runtime-upgrade
 cli to submit a runtime upgrade easily
+    
+
+Tool submits a substrate wasm file using sudo to the local instance of a development node   
+
 
 
 ## Build and Run:  
